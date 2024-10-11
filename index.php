@@ -1,3 +1,42 @@
+<?php
+
+require "model/user.php";
+require "dbBroker.php";
+session_start();
+if(isset($_POST['username']) && isset($_POST['password'])){
+    $uname=$_POST['username'];
+    $pass=$_POST['password'];
+
+    $conn=new mysqli();
+
+    $korisnik=new User(1, $uname, $pass);
+    $odg=User::logInUser($korisnik, $conn);
+
+    if($odg->num_rows==1){
+        echo ` <script>
+        console.log("Uspesno ste se ulogovali");
+    </script>`;
+    $_SESSION['user_id']=$korisnik->id;
+    header('Location: home.php');
+    exit();
+
+
+    }else{
+        echo ` <script>
+        console.log("Niste se prijavili");
+    </script>
+    }`;
+}
+
+}
+
+
+
+
+
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,6 +68,12 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    
+    
+   
+
+
 </body>
 
 </html>
